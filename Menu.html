@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pathan Ka Hotel - Our Menu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <!-- Header with Navigation -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="https://via.placeholder.com/50x50" alt="Pathan Ka Hotel ">
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="menu.html">Menu</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Gallery</a></li>
+                    <li><a href="Contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons" id="authButtons">
+                <!-- Default state (shown when not logged in) -->
+                <a href="login.html" class="login-btn">Login</a>
+                <a href="signup.html" class="signup-btn">Sign Up</a>
+
+                <!-- Logged in state (hidden by default) -->
+                <div class="logged-in" id="loggedInUser" style="display: none;">
+                    <span class="user-name" id="userName"></span>
+                    <button class="logout-btn" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Menu Banner -->
+    <section class="menu-banner">
+        <div class="container menu-banner-content">
+            <h1>Our Delicious Menu</h1>
+        </div>
+    </section>
+
+    <!-- Menu Categories -->
+    <div class="container">
+        <div class="menu-categories">
+            <button class="category-btn active" data-category="all">All Items</button>
+            <button class="category-btn" data-category="starters">Starters</button>
+            <button class="category-btn" data-category="main-course">Main Course</button>
+            <button class="category-btn" data-category="breads">Breads</button>
+            <button class="category-btn" data-category="biryani">Biryani</button>
+            <button class="category-btn" data-category="desserts">Desserts</button>
+            <button class="category-btn" data-category="beverages">Beverages</button>
+        </div>
+
+        <!-- Starters Section -->
+        <div class="menu-section" id="starters">
+            <h2 class="section-title">Starters</h2>
+            <div class="menu-items">
+                <!-- Item 1 -->
+                <div class="menu-item" data-category="starters">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                            alt="Chicken Tikka">
+                    </div>
+                    <div class="item-details">
+                        <div class="item-header">
+                            <h3 class="item-name">Chicken Tikka</h3>
+                            <span class="item-price">₹250</span>
+                        </div>
+                        <p class="item-description">Succulent pieces of chicken marinated in spices and yogurt, cooked
+                            in tandoor.</p>
+                        <div class="item-controls">
+                            <div class="quantity-control">
+                                <button class="quantity-btn minus"><i class="fas fa-minus"></i></button>
+                                <span class="quantity">0</span>
+                                <button class="quantity-btn plus"><i class="fas fa-plus"></i></button>
+                            </div>
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="menu-item" data-category="starters">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1606491956689-2ea866880c84?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                            alt="Paneer Tikka">
+                    </div>
+                    <div class="item-details">
+                        <div class="item-header">
+                            <h3 class="item-name">Paneer Tikka</h3>
+                            <span class="item-price">₹220</span>
+                        </div>
+                        <p class="item-description">Cubes of paneer marinated in spices and grilled to perfection.</p>
+                        <div class="item-controls">
+                            <div class="quantity-control">
+                                <button class="quantity-btn minus"><i class="fas fa-minus"></i></button>
+                                <span class="quantity">0</span>
+                                <button class="quantity-btn plus"><i class="fas fa-plus"></i></button>
+                            </div>
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="menu-item" data-category="starters">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                            alt="Mutton Seekh Kebab">
+                    </div>
+                    <div class="item-details">
+                        <div class="item-header">
+                            <h3 class="item-name">Mutton Seekh Kebab</h3>
+                            <span class="item-price">₹280</span>
+                        </div>
+                        <p class="item-description">Minced mutton mixed with spices and grilled on skewers.</p>
+                        <div class="item-controls">
+                            <div class="quantity-control">
+                                <button class="quantity-btn minus"><i class="fas fa-minus"></i></button>
+                                <span class="quantity">0</span>
+                                <button class="quantity-btn plus"><i class="fas fa-plus"></i></button>
+                            </div>
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Course Section -->
+        <div class="menu-section" id="main-course">
+            <h2 class="section-title">Main Course</h2>
+            <div class="menu-items">
+                <!-- Item 1 -->
+                <div class="menu-item" data-category="main-course">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1632818924360-68d4994cfdb2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                            alt="Butter Chicken">
+                    </div>
+                    <div class="item-details">
+                        <div class="item-header">
+                            <h3 class="item-name">Butter Chicken</h3>
+                            <span class="item-price">₹320</span>
+                        </div>
+                        <p class="item-description">Tender chicken pieces in a creamy tomato-based gravy.</p>
+                        <div class="item-controls">
+                            <div class="quantity-control">
+                                <button class="quantity-btn minus"><i class="fas fa-minus"></i></button>
+                                <span class="quantity">0</span>
+                                <button class="quantity-btn plus"><i class="fas fa-plus"></i></button>
+                            </div>
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="menu-item" data-category="main-course">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                            alt="Kadhai Paneer">
+                    </div>
+                    <div class="item-details">
+                        <div class="item-header">
+                            <h3 class="item-name">Kadhai Paneer</h3>
+                            <span class="item-price">₹280</span>
+                        </div>
+                        <p class="item-description">Paneer cooked with bell peppers and kadhai masala.</p>
+                        <div class="item-controls">
+                            <div class="quantity-control">
+                                <button class="quantity-btn minus"><i class="fas fa-minus"></i></button>
+                                <span class="quantity">0</span>
+                                <button class="quantity-btn plus"><i class="fas fa-plus"></i></button>
+                            </div>
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="menu-item" data-category="main-course">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                            alt="Mutton Rogan Josh">
+                    </div>
+                    <div class="item-details">
+                        <div class="item-header">
+                            <h3 class="item-name">Mutton Rogan Josh</h3>
+                            <span class="item-price">₹380</span>
+                        </div>
+                        <p class="item-description">Aromatic mutton curry with rich gravy and authentic spices.</p>
+                        <div class="item-controls">
+                            <div class="quantity-control">
+                                <button class="quantity-btn minus"><i class="fas fa-minus"></i></button>
+                                <span class="quantity">0</span>
+                                <button class="quantity-btn plus"><i class="fas fa-plus"></i></button>
+                            </div>
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Breads Section -->
+        <div class="menu-section" id="breads">
+            <h2 class="section-title">Breads</h2>
+            <div class="menu-items">
+                <!-- Item 1 -->
+                <div class="menu-item" data-category="breads">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1601050690117-94f5f6fa3bd0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                            alt="Butter Naan">
+                    </div>
+                    <div class="item-details">
+                        <div class="item-header">
+                            <h3 class="item-name">Butter Naan</h3>
+                            <span class="item-price">₹50</span>
+                        </div>
+                        <p class="item-description">Soft leavened bread baked in tandoor with butter.</p>
+                        <div class="item-controls">
+                            <div class="quantity-control">
+                                <button class="quantity-btn minus"><i class="fas fa-minus"></i></button>
+                                <span class="quantity">0</span>
+                                <button class="quantity-btn plus"><i class="fas fa-plus"></i></button>
+                            </div>
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="menu-item" data-category="breads">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1633945274309-2c16c9682a8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                            alt="Rumali Roti">
+                    </div>
+                    <div class="item-details">
+                        <div class="item-header">
+                            <h3 class="item-name">Rumali Roti</h3>
+                            <span class="item-price">₹40</span>
+                        </div>
+                        <p class="item-description">Thin bread cooked on inverted griddle, named for its
+                            handkerchief-like thinness.</p>
+                        <div class="item-controls">
+                            <div class="quantity-control">
+                                <button class="quantity-btn minus"><i class="fas fa-minus"></i></button>
+                                <span class="quantity">0</span>
+                                <button class="quantity-btn plus"><i class="fas fa-plus"></i></button>
+                            </div>
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="menu-item" data-category="breads">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1601050690647-9b7e5b7ea0a3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                            alt="Garlic Naan">
+                    </div>
+                    <div class="item-details">
+                        <div class="item-header">
+                            <h3 class="item-name">Garlic Naan</h3>
+                            <span class="item-price">₹60</span>
+                        </div>
+                        <p class="item-description">Naan bread topped with garlic and coriander.</p>
+                        <div class="item-controls">
+                            <div class="quantity-control">
+                                <button class="quantity-btn minus"><i class="fas fa-minus"></i></button>
+                                <span class="quantity">0</span>
+                                <button class="quantity-btn plus"><i class="fas fa-plus"></i></button>
+                            </div>
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Biryani Section -->
+        <div class="menu-section" id="biryani">
+            <h2 class="section-title">Biryani</h2>
+            <div class="menu-items">
+                <!-- Item 1 -->
+                <div class="menu-item" data-category="biryani">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                            alt="Chicken Biryani">
+                    </div>
+                    <div class="item-details">
+                        <div class="item-header">
+                            <h3 class="item-name">Chicken Biryani</h3>
+                            <span class="item-price">₹280</span>
+                        </div>
+                        <p class="item-description">Fragrant basmati rice cooked with chicken and aromatic spices.</p>
+                        <div class="item-controls">
+                            <div class="quantity-control">
+                                <button class="quantity-btn minus"><i class="fas fa-minus"></i></button>
+                                <span class="quantity">0</span>
+                                <button class="quantity-btn plus"><i class="fas fa-plus"></i></button>
+                            </div>
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="menu-item" data-category="biryani">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1599043513900-ed6fe01d3833?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                            alt="Mutton Biryani">
+                    </div>
+                    <div class="item-details">
+                        <div class="item-header">
+                            <h3 class="item-name">Mutton Biryani</h3>
+                            <span class="item-price">₹350</span>
+                        </div>
+                        <p class="item-description">Flavorful rice dish with tender mutton pieces and spices.</p>
+                        <div class="item-controls">
+                            <div class="quantity-control">
+                                <button class="quantity-btn minus"><i class="fas fa-minus"></i></button>
+                                <span class="quantity">0</span>
+                                <button class="quantity-btn plus"><i class="fas fa-plus"></i></button>
+                            </div>
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="menu-item" data-category="biryani">
+                    <div class="item-image">
+                        <img src="https://images.unsplash.com/photo-1633945274309-2c16c9682a8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                            alt="Veg Biryani">
+                    </div>
+                    <div class="item-details">
+                        <div class="item-header">
+                            <h3 class="item-name">Veg Biryani</h3>
+                            <span class="item-price">₹220</span>
+                        </div>
+                        <p class="item-description">Aromatic rice cooked with mixed vegetables and spices.</p>
+                        <div class="item-controls">
+                            <div class="quantity-control">
+                                <button class="quantity-btn minus"><i class="fas fa-minus"></i></button>
+                                <span class="quantity">0</span>
+                                <button class="quantity-btn plus"><i class="fas fa-plus"></i></button>
+                            </div>
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Pathan Ka Hotel</h3>
+                    <p>Bringing authentic Pathan flavors to your table since 1995. Our commitment to quality and
+                        tradition makes us unique.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Menu</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Gallery</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li>123 Food Street, City</li>
+                        <li>Phone: +123 456 7890</li>
+                        <li>Email: info@pathankahotel.com</li>
+                        <li>Open: 10AM - 11PM Daily</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Pathan Ka Hotel. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="js/script.js"></script>
+    <script>
+        // Quantity controls functionality
+        document.querySelectorAll('.quantity-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const isPlus = this.classList.contains('plus');
+                const quantityElement = this.parentElement.querySelector('.quantity');
+                let quantity = parseInt(quantityElement.textContent);
+
+                if (isPlus) {
+                    quantity++;
+                } else if (quantity > 0) {
+                    quantity--;
+                }
+
+                quantityElement.textContent = quantity;
+            });
+        });
+
+        // Add to cart functionality
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', function () {
+                const quantity = parseInt(this.parentElement.querySelector('.quantity').textContent);
+                if (quantity > 0) {
+                    const itemName = this.closest('.item-details').querySelector('.item-name').textContent;
+                    alert(`Added ${quantity} ${itemName} to cart!`);
+                } else {
+                    alert('Please select at least 1 quantity');
+                }
+            });
+        });
+
+        // Category filter functionality
+        document.querySelectorAll('.category-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                // Remove active class from all buttons
+                document.querySelectorAll('.category-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+
+                // Add active class to clicked button
+                this.classList.add('active');
+
+                const category = this.dataset.category;
+                const menuItems = document.querySelectorAll('.menu-item');
+
+                if (category === 'all') {
+                    menuItems.forEach(item => {
+                        item.style.display = 'block';
+                    });
+                    document.querySelectorAll('.menu-section').forEach(section => {
+                        section.style.display = 'block';
+                    });
+                } else {
+                    // Hide all menu sections first
+                    document.querySelectorAll('.menu-section').forEach(section => {
+                        section.style.display = 'none';
+                    });
+
+                    // Show only items from selected category
+                    menuItems.forEach(item => {
+                        if (item.dataset.category === category) {
+                            item.style.display = 'block';
+                            item.closest('.menu-section').style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

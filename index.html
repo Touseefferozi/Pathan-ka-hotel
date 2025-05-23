@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pathan Ka Hotel - Authentic Cuisine</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <!-- Header with Navigation -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="https://via.placeholder.com/50x50" alt="Pathan Ka Hotel ">
+
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="menu.html">Menu</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Gallery</a></li>
+                    <li><a href="Contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons" id="authButtons">
+                <!-- Default state (shown when not logged in) -->
+                <a href="login.html" class="login-btn">Login</a>
+                <a href="signup.html" class="signup-btn">Sign Up</a>
+
+                <!-- Logged in state (hidden by default) -->
+                <div class="logged-in" id="loggedInUser" style="display: none;">
+                    <span class="user-name" id="userName"></span>
+                    <button class="logout-btn" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Banner Section -->
+    <section class="banner">
+        <div class="container banner-content">
+            <h1>Authentic Pathan Cuisine</h1>
+            <p>Experience the rich flavors and traditions of Pathan hospitality with our carefully crafted dishes made
+                from generations-old recipes.</p>
+            <a href="Menu.html" class="cta-button">View Our Menu</a>
+        </div>
+    </section>
+
+    <!-- Main Content Sections -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Our Specialties</h2>
+            <!-- Content would go here -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Pathan Ka Hotel</h3>
+                    <p>Bringing authentic Pathan flavors to your table since 1995. Our commitment to quality and
+                        tradition makes us unique.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f">f</i></a>
+                        <a href="#"><i class="fab fa-instagram">i</i></a>
+                        <a href="#"><i class="fab fa-twitter">t</i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Menu</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Gallery</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li>123 Food Street, City</li>
+                        <li>Phone: +123 456 7890</li>
+                        <li>Email: info@pathankahotel.com</li>
+                        <li>Open: 10AM - 11PM Daily</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Pathan Ka Hotel. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+
+
+    <!-- Signup Modal -->
+
+    <script src="js/script.js"></script>
+    <script>
+        // Modal functionality
+        const loginBtn = document.getElementById("loginBtn");
+        const signupBtn = document.getElementById("signupBtn");
+        const loginModal = document.getElementById("loginModal");
+        const signupModal = document.getElementById("signupModal");
+        const closeButtons = document.getElementsByClassName("close");
+        const switchToSignup = document.getElementById("switchToSignup");
+        const switchToLogin = document.getElementById("switchToLogin");
+
+        // Open login modal
+        loginBtn.onclick = function () {
+            loginModal.style.display = "block";
+            signupModal.style.display = "none";
+        }
+
+        // Open signup modal
+        signupBtn.onclick = function () {
+            signupModal.style.display = "block";
+            loginModal.style.display = "none";
+        }
+
+        // Close modals when clicking X
+        for (let i = 0; i < closeButtons.length; i++) {
+            closeButtons[i].onclick = function () {
+                loginModal.style.display = "none";
+                signupModal.style.display = "none";
+            }
+        }
+
+        // Switch between login and signup
+        switchToSignup.onclick = function (e) {
+            e.preventDefault();
+            loginModal.style.display = "none";
+            signupModal.style.display = "block";
+        }
+
+        switchToLogin.onclick = function (e) {
+            e.preventDefault();
+            signupModal.style.display = "none";
+            loginModal.style.display = "block";
+        }
+
+        // Close modals when clicking outside
+        window.onclick = function (event) {
+            if (event.target == loginModal) {
+                loginModal.style.display = "none";
+            }
+            if (event.target == signupModal) {
+                signupModal.style.display = "none";
+            }
+        }
+
+        // Form submission (basic example)
+        document.getElementById("loginForm").onsubmit = function (e) {
+            e.preventDefault();
+            alert("Login functionality would be implemented here");
+            loginModal.style.display = "none";
+        }
+
+        document.getElementById("signupForm").onsubmit = function (e) {
+            e.preventDefault();
+            alert("Signup functionality would be implemented here");
+            signupModal.style.display = "none";
+        }
+    </script>
+</body>
+
+</html>
