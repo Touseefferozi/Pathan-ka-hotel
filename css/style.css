@@ -385,6 +385,66 @@ footer {
 
 
 /* close  */
+
+/* Cart Page Styles */
+.cart-section {
+    padding: 60px 0;
+}
+
+.cart-section h1 {
+    text-align: center;
+    margin-bottom: 40px;
+    color: #8B0000;
+    font-size: 36px;
+}
+
+#cart-items {
+    margin-bottom: 30px;
+    border-top: 1px solid #ddd;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.cart-item .item-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+.cart-item .item-price {
+    font-size: 16px;
+    color: #666;
+}
+
+#cart-summary {
+    text-align: right;
+    font-size: 20px;
+    font-weight: 700;
+    color: #8B0000;
+}
+
+#cart-summary .checkout-btn {
+    background-color: #FFD700;
+    color: #8B0000;
+    border: none;
+    padding: 12px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+}
+
+#cart-summary .checkout-btn:hover {
+    background-color: #e6c200;
+}
 /* Logged in user styles */
 .logged-in {
     display: flex;

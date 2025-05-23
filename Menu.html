@@ -422,10 +422,39 @@
         // Add to cart functionality
         document.querySelectorAll('.add-to-cart').forEach(button => {
             button.addEventListener('click', function () {
+                // Check if user is logged in
+                if (!checkLoginStatus()) {
+                    alert('Please login to add items to the cart.');
+                    window.location.href = 'login.html';
+                    return; // Stop further execution
+                }
+
                 const quantity = parseInt(this.parentElement.querySelector('.quantity').textContent);
                 if (quantity > 0) {
-                    const itemName = this.closest('.item-details').querySelector('.item-name').textContent;
-                    alert(`Added ${quantity} ${itemName} to cart!`);
+                    const itemElement = this.closest('.menu-item');
+                    const itemName = itemElement.querySelector('.item-name').textContent;
+                    const itemPrice = itemElement.querySelector('.item-price').textContent;
+
+                    // Get existing cart items from localStorage or initialize an empty array
+                    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+                    // Check if the item is already in the cart
+                    const existingItemIndex = cartItems.findIndex(item => item.name === itemName);
+
+                    if (existingItemIndex > -1) {
+                        // If item exists, update the quantity
+                        cartItems[existingItemIndex].quantity += quantity;
+                    } else {
+                        // If item does not exist, add it to the cart
+                        cartItems.push({ name: itemName, price: itemPrice, quantity: quantity });
+                    }
+
+                    // Save updated cart items back to localStorage
+                    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+
+                    // Redirect to the cart page
+                    window.location.href = 'cart.html';
+
                 } else {
                     alert('Please select at least 1 quantity');
                 }

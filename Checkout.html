@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pathan Ka Hotel - Checkout</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="https://via.placeholder.com/50x50" alt="Pathan Ka Hotel ">
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="menu.html">Menu</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Gallery</a></li>
+                    <li><a href="Contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons" id="authButtons">
+                <!-- Default state (shown when not logged in) -->
+                <a href="login.html" class="login-btn">Login</a>
+                <a href="signup.html" class="signup-btn">Sign Up</a>
+
+                <!-- Logged in state (hidden by default) -->
+                <div class="logged-in" id="loggedInUser" style="display: none;">
+                    <span class="user-name" id="userName"></span>
+                    <button class="logout-btn" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="checkout-section">
+        <div class="container">
+            <h1>Checkout</h1>
+            <div class="payment-methods">
+                <h2>Select Payment Method</h2>
+                <div class="payment-option">
+                    <input type="radio" id="card-payment" name="payment-method" value="card">
+                    <label for="card-payment">Credit/Debit Card</label>
+                </div>
+                <div class="payment-option">
+                    <input type="radio" id="cod-payment" name="payment-method" value="cod">
+                    <label for="cod-payment">Cash on Delivery (COD)</label>
+                </div>
+            </div>
+
+            <div id="card-details" style="display: none;">
+                <h2>Card Details</h2>
+                <form>
+                    <div class="form-group">
+                        <label for="card-number">Card Number</label>
+                        <input type="text" id="card-number" placeholder="Enter card number">
+                    </div>
+                    <div class="form-group">
+                        <label for="expiry-date">Expiry Date</label>
+                        <input type="text" id="expiry-date" placeholder="MM/YY">
+                    </div>
+                    <div class="form-group">
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" placeholder="CVV">
+                    </div>
+                </form>
+            </div>
+
+            <button class="place-order-btn">Place Order</button>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Pathan Ka Hotel</h3>
+                    <p>Bringing authentic Pathan flavors to your table since 1995. Our commitment to quality and
+                        tradition makes us unique.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Menu</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Gallery</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li>123 Food Street, City</li>
+                        <li>Phone: +123 456 7890</li>
+                        <li>Email: info@pathankahotel.com</li>
+                        <li>Open: 10AM - 11PM Daily</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Pathan Ka Hotel. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript for checkout functionality will go here
+        document.addEventListener('DOMContentLoaded', () => {
+            const cardPaymentRadio = document.getElementById('card-payment');
+            const cardDetailsDiv = document.getElementById('card-details');
+
+            cardPaymentRadio.addEventListener('change', () => {
+                if (cardPaymentRadio.checked) {
+                    cardDetailsDiv.style.display = 'block';
+                } else {
+                    cardDetailsDiv.style.display = 'none';
+                }
+            });
+
+            const codPaymentRadio = document.getElementById('cod-payment');
+            codPaymentRadio.addEventListener('change', () => {
+                if (codPaymentRadio.checked) {
+                    cardDetailsDiv.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
