@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <title>Pathan Ka Hotel - Our Menu</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
@@ -21,7 +22,8 @@
                     <li><a href="index.html">Home</a></li>
                     <li><a href="menu.html">Menu</a></li>
                     <li><a href="#">About Us</a></li>
-                    <li><a href="#">Gallery</a></li>
+                    <li><a href="Gallery.html">Gallery</a></li>
+
                     <li><a href="Contact.html">Contact</a></li>
                 </ul>
             </nav>
@@ -400,7 +402,12 @@
             </div>
         </div>
     </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="js/script.js"></script>
+    <script type="module" src="js/Firebase.js"></script>
+    <script type="module" src="js/auth.js"></script>
     <script>
         // Quantity controls functionality
         document.querySelectorAll('.quantity-btn').forEach(button => {
@@ -419,88 +426,90 @@
             });
         });
 
-        // Add to cart functionality
+        // Add to cart functionality - MODIFIED VERSION
         document.querySelectorAll('.add-to-cart').forEach(button => {
-            button.addEventListener('click', function () {
-                // Check if user is logged in
-                if (!checkLoginStatus()) {
-                    alert('Please login to add items to the cart.');
-                    window.location.href = 'login.html';
-                    return; // Stop further execution
-                }
-
+            button.addEventListener('click', async function () {
+                // First check quantity
                 const quantity = parseInt(this.parentElement.querySelector('.quantity').textContent);
-                if (quantity > 0) {
-                    const itemElement = this.closest('.menu-item');
-                    const itemName = itemElement.querySelector('.item-name').textContent;
-                    const itemPrice = itemElement.querySelector('.item-price').textContent;
-
-                    // Get existing cart items from localStorage or initialize an empty array
-                    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-
-                    // Check if the item is already in the cart
-                    const existingItemIndex = cartItems.findIndex(item => item.name === itemName);
-
-                    if (existingItemIndex > -1) {
-                        // If item exists, update the quantity
-                        cartItems[existingItemIndex].quantity += quantity;
-                    } else {
-                        // If item does not exist, add it to the cart
-                        cartItems.push({ name: itemName, price: itemPrice, quantity: quantity });
-                    }
-
-                    // Save updated cart items back to localStorage
-                    localStorage.setItem('cartItems', JSON.stringify(cartItems));
-
-                    // Redirect to the cart page
-                    window.location.href = 'cart.html';
-
-                } else {
+                if (quantity <= 0) {
                     alert('Please select at least 1 quantity');
+                    return;
                 }
+
+                // Then check login status
+                const isLoggedIn = await checkLoginStatus(); // Assuming checkLoginStatus might be async
+                if (!isLoggedIn) {
+                    alert('Please login to add items to the cart.');
+                    window.location.href = 'login.html?redirect=cart.html'; // Add redirect parameter
+                    return;
+                }
+
+                // Process cart items
+                const itemElement = this.closest('.menu-item');
+                const itemName = itemElement.querySelector('.item-name').textContent;
+                const itemPrice = itemElement.querySelector('.item-price').textContent;
+
+                // Get or initialize cart
+                const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+                // Update existing item or add new one
+                const existingItemIndex = cartItems.findIndex(item => item.name === itemName);
+                if (existingItemIndex > -1) {
+                    cartItems[existingItemIndex].quantity += quantity;
+                } else {
+                    cartItems.push({
+                        name: itemName,
+                        price: itemPrice,
+                        quantity: quantity,
+                        image: itemElement.querySelector('img')?.src || '' // Add image if available
+                    });
+                }
+
+                // Save cart
+                localStorage.setItem('cartItems', JSON.stringify(cartItems));
+
+                // Redirect to cart page
+                window.location.href = 'cart.html';
             });
         });
 
-        // Category filter functionality
+        // Category filter functionality - OPTIMIZED
         document.querySelectorAll('.category-btn').forEach(button => {
             button.addEventListener('click', function () {
-                // Remove active class from all buttons
+                // Update active button
                 document.querySelectorAll('.category-btn').forEach(btn => {
-                    btn.classList.remove('active');
+                    btn.classList.toggle('active', btn === this);
                 });
 
-                // Add active class to clicked button
-                this.classList.add('active');
-
                 const category = this.dataset.category;
-                const menuItems = document.querySelectorAll('.menu-item');
+                const menuSections = document.querySelectorAll('.menu-section');
 
-                if (category === 'all') {
-                    menuItems.forEach(item => {
-                        item.style.display = 'block';
-                    });
-                    document.querySelectorAll('.menu-section').forEach(section => {
-                        section.style.display = 'block';
-                    });
-                } else {
-                    // Hide all menu sections first
-                    document.querySelectorAll('.menu-section').forEach(section => {
-                        section.style.display = 'none';
-                    });
+                menuSections.forEach(section => {
+                    const shouldShow = category === 'all' ||
+                        section.querySelector('.menu-item[data-category="' + category + '"]');
 
-                    // Show only items from selected category
-                    menuItems.forEach(item => {
-                        if (item.dataset.category === category) {
-                            item.style.display = 'block';
-                            item.closest('.menu-section').style.display = 'block';
-                        } else {
-                            item.style.display = 'none';
-                        }
-                    });
-                }
+                    section.style.display = shouldShow ? 'block' : 'none';
+
+                    if (shouldShow) {
+                        section.querySelectorAll('.menu-item').forEach(item => {
+                            item.style.display = (category === 'all' || item.dataset.category === category)
+                                ? 'block'
+                                : 'none';
+                        });
+                    }
+                });
             });
         });
+        async function checkLoginStatus() {
+            return new Promise((resolve) => {
+                firebase.auth().onAuthStateChanged((user) => {
+                    resolve(!!user);
+                });
+            });
+        }
+
     </script>
+
 </body>
 
 </html>

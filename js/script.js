@@ -1,6 +1,6 @@
-// auth.js - Authentication state management
+// General scripts for the website
 
-// Check if user is logged in (you would typically check with your backend)
+// Quantity controls functionality
 function checkLoginStatus() {
   // For demo purposes, we'll use localStorage
   // In real app, you would verify with your backend
@@ -20,27 +20,55 @@ function updateNavbar() {
   const userNameSpan = document.getElementById("userName");
   const logoutBtn = document.getElementById("logoutBtn");
 
+  // Check if authButtons element exists before proceeding
+  if (!authButtons) {
+    console.warn(
+      "Element with ID 'authButtons' not found. Navbar update skipped."
+    );
+    return;
+  }
+
   if (isLoggedIn) {
     // Hide login/signup buttons
-    authButtons.querySelector(".login-btn").style.display = "none";
-    authButtons.querySelector(".signup-btn").style.display = "none";
+    const loginBtn = authButtons.querySelector(".login-btn");
+    const signupBtn = authButtons.querySelector(".signup-btn");
+    if (loginBtn) {
+      loginBtn.style.display = "none";
+    }
+    if (signupBtn) {
+      signupBtn.style.display = "none";
+    }
 
     // Show logged in user info
-    loggedInUser.style.display = "flex";
-    userNameSpan.textContent = getLoggedInUser();
+    if (loggedInUser) {
+      loggedInUser.style.display = "flex";
+      if (userNameSpan) {
+        userNameSpan.textContent = getLoggedInUser();
+      }
+    }
 
     // Logout button functionality
-    logoutBtn.addEventListener("click", function (e) {
-      e.preventDefault();
-      logoutUser();
-    });
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        logoutUser();
+      });
+    }
   } else {
     // Show login/signup buttons
-    authButtons.querySelector(".login-btn").style.display = "inline-block";
-    authButtons.querySelector(".signup-btn").style.display = "inline-block";
+    const loginBtn = authButtons.querySelector(".login-btn");
+    const signupBtn = authButtons.querySelector(".signup-btn");
+    if (loginBtn) {
+      loginBtn.style.display = "inline-block";
+    }
+    if (signupBtn) {
+      signupBtn.style.display = "inline-block";
+    }
 
     // Hide logged in user info
-    loggedInUser.style.display = "none";
+    if (loggedInUser) {
+      loggedInUser.style.display = "none";
+    }
   }
 }
 
@@ -65,77 +93,124 @@ document.addEventListener("DOMContentLoaded", function () {
   updateNavbar();
 });
 
-// Example usage: Simulate login
-
-// In login.html
-document.getElementById("loginForm").addEventListener("submit", function (e) {
-  e.preventDefault();
-
-  // Get form values
-  const email = document.getElementById("loginEmail").value;
-  const password = document.getElementById("loginPassword").value;
-
-  // Simple validation
-  if (!email || !password) {
-    alert("Please fill in all fields");
-    return;
-  }
-
-  // Here you would typically send data to server for authentication
-  // For demo, we'll simulate successful login
-  loginUser(email.split("@")[0]); // Use the part before @ as username
-
-  alert("Login successful! Redirecting...");
-
-  // Redirect to home page after login
-  setTimeout(() => {
-    window.location.href = "index.html";
-  }, 1000);
-});
-
-// In signup.html
-document.getElementById("signupForm").addEventListener("submit", function (e) {
-  e.preventDefault();
-
-  // Get form values
-  const fullName = document.getElementById("fullName").value;
-  const email = document.getElementById("signupEmail").value;
-  const password = document.getElementById("signupPassword").value;
-  const confirmPassword = document.getElementById("confirmPassword").value;
-
-  // Simple validation
-  if (!fullName || !email || !password || !confirmPassword) {
-    alert("Please fill in all fields");
-    return;
-  }
-
-  if (password !== confirmPassword) {
-    alert("Passwords do not match");
-    return;
-  }
-
-  if (password.length < 8) {
-    alert("Password must be at least 8 characters");
-    return;
-  }
-
-  if (!document.getElementById("terms").checked) {
-    alert("You must agree to the terms and conditions");
-    return;
-  }
-
-  // Here you would typically send data to server
-  // For demo, we'll simulate successful signup and login
-  loginUser(fullName);
-
-  alert("Account created successfully! Redirecting...");
-
-  // Redirect to home page after signup
-  setTimeout(() => {
-    window.location.href = "index.html";
-  }, 1500);
-});
-
 // check out page
 
 // close
+
+// Quantity Control Functionality
+document.querySelectorAll(".quantity-btn").forEach((button) => {
+  button.addEventListener("click", function () {
+    const isPlus = this.classList.contains("plus");
+    const quantityElement = this.parentElement.querySelector(".quantity");
+    let quantity = parseInt(quantityElement.textContent);
+
+    quantity = isPlus ? quantity + 1 : Math.max(0, quantity - 1);
+    quantityElement.textContent = quantity;
+  });
+});
+
+// Enhanced Add to Cart Functionality
+document.querySelectorAll(".add-to-cart").forEach((button) => {
+  button.addEventListener("click", async function () {
+    try {
+      // Validate quantity selection
+      const quantity = parseInt(
+        this.parentElement.querySelector(".quantity").textContent
+      );
+      if (quantity <= 0) {
+        alert("Please select at least 1 quantity");
+        return;
+      }
+
+      // Verify authentication status
+      const user = await getCurrentUser();
+      if (!user) {
+        alert("Please login to add items to your cart");
+        window.location.href = `login.html?redirect=${encodeURIComponent(
+          window.location.href
+        )}`;
+        return;
+      }
+
+      // Process cart item
+      const itemElement = this.closest(".menu-item");
+      const cartItem = {
+        name: itemElement.querySelector(".item-name").textContent,
+        price: itemElement.querySelector(".item-price").textContent,
+        quantity: quantity,
+        image: itemElement.querySelector("img")?.src || "",
+      };
+
+      updateCart(cartItem);
+      window.location.href = "cart.html";
+    } catch (error) {
+      console.error("Cart processing error:", error);
+      alert("An error occurred while adding item to cart");
+    }
+  });
+});
+
+// Authentication State Management
+async function updateAuthUI() {
+  const authLinks = document.getElementById("auth-links");
+  const user = await getCurrentUser();
+
+  if (user) {
+    authLinks.innerHTML = `
+          <li class="nav-item">
+              <span class="nav-link text-white">Welcome, ${
+                user.displayName || "User"
+              }</span>
+          </li>
+          <li class="nav-item">
+              <button class="nav-link btn btn-link text-white" id="logout-btn">Logout</button>
+          </li>
+      `;
+
+    document
+      .getElementById("logout-btn")
+      ?.addEventListener("click", handleLogout);
+  } else {
+    authLinks.innerHTML = `
+          <li class="nav-item">
+              <a class="nav-link text-white" href="login.html">Login</a>
+          </li>
+      `;
+  }
+}
+
+// Helper Functions
+async function getCurrentUser() {
+  return new Promise((resolve) => {
+    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+      unsubscribe();
+      resolve(user);
+    });
+  });
+}
+
+function updateCart(item) {
+  const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+  const existingIndex = cartItems.findIndex((i) => i.name === item.name);
+
+  if (existingIndex >= 0) {
+    cartItems[existingIndex].quantity += item.quantity;
+  } else {
+    cartItems.push(item);
+  }
+
+  localStorage.setItem("cartItems", JSON.stringify(cartItems));
+}
+
+async function handleLogout() {
+  try {
+    await firebase.auth().signOut();
+    localStorage.removeItem("cartItems");
+    window.location.href = "index.html";
+  } catch (error) {
+    console.error("Logout failed:", error);
+  }
+}
+
+// Initialize UI on page load
+document.addEventListener("DOMContentLoaded", updateAuthUI);

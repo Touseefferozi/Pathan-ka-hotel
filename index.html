@@ -21,7 +21,8 @@
                     <li><a href="index.html">Home</a></li>
                     <li><a href="menu.html">Menu</a></li>
                     <li><a href="#">About Us</a></li>
-                    <li><a href="#">Gallery</a></li>
+                    <li><a href="Gallery.html">Gallery</a></li>
+
                     <li><a href="Contact.html">Contact</a></li>
                 </ul>
             </nav>
@@ -31,9 +32,9 @@
                 <a href="signup.html" class="signup-btn">Sign Up</a>
 
                 <!-- Logged in state (hidden by default) -->
-                <div class="logged-in" id="loggedInUser" style="display: none;">
-                    <span class="user-name" id="userName"></span>
-                    <button class="logout-btn" id="logoutBtn">Logout</button>
+                <div id="loggedInUser" style="display: none;">
+                    Welcome, <span id="userName">User</span> |
+                    <a href="" id="logoutBtn">Logout</a>
                 </div>
             </div>
         </div>
@@ -103,15 +104,15 @@
     <!-- Signup Modal -->
 
     <script src="js/script.js"></script>
-    <script>
-        // Modal functionality
-        const loginBtn = document.getElementById("loginBtn");
-        const signupBtn = document.getElementById("signupBtn");
-        const loginModal = document.getElementById("loginModal");
-        const signupModal = document.getElementById("signupModal");
-        const closeButtons = document.getElementsByClassName("close");
-        const switchToSignup = document.getElementById("switchToSignup");
-        const switchToLogin = document.getElementById("switchToLogin");
+    <!-- <script type="module" src="js/Firebase.js"></script> -->
+    <script type="module" src="js/auth.js"></script>
+    <script type="module">
+        import { auth, onAuthStateChanged, signOut } from "./js/Firebase.js";
+
+        const authButtons = document.getElementById("authButtons");
+        const loggedInUserDiv = document.getElementById("loggedInUser");
+        const userNameSpan = document.getElementById("userName");
+        const logoutBtn = document.getElementById("logoutBtn");
 
         // Open login modal
         loginBtn.onclick = function () {
@@ -169,6 +170,8 @@
             signupModal.style.display = "none";
         }
     </script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 </body>
 
 </html>

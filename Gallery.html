@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pathan Ka Hotel - Gallery</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="https://via.placeholder.com/50x50" alt="Pathan Ka Hotel ">
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="menu.html">Menu</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="Gallery.html">Gallery</a></li>
+
+                    <li><a href="Contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons" id="authButtons">
+                <!-- Default state (shown when not logged in) -->
+                <a href="login.html" class="login-btn">Login</a>
+                <a href="signup.html" class="signup-btn">Sign Up</a>
+
+                <!-- Logged in state (hidden by default) -->
+                <div class="logged-in" id="loggedInUser" style="display: none;">
+                    <span class="user-name" id="userName"></span>
+                    <button class="logout-btn" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="gallery-section">
+        <div class="container">
+            <h1>Our Gallery</h1>
+            <!-- Gallery content will go here -->
+            <p>Coming soon!</p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Pathan Ka Hotel</h3>
+                    <p>Bringing authentic Pathan flavors to your table since 1995. Our commitment to quality and
+                        tradition makes us unique.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Menu</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Gallery</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li>123 Food Street, City</li>
+                        <li>Phone: +123 456 7890</li>
+                        <li>Email: info@pathankahotel.com</li>
+                        <li>Open: 10AM - 11PM Daily</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Pathan Ka Hotel. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="js/Firebase.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module">
+        import { auth, onAuthStateChanged, signOut } from "./js/Firebase.js";
+
+        const authButtons = document.getElementById("authButtons");
+        const loggedInUserDiv = document.getElementById("loggedInUser");
+        const userNameSpan = document.getElementById("userName");
+        const logoutBtn = document.getElementById("logoutBtn");
+
+        // Listen for authentication state changes
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in
+                authButtons.style.display = "none";
+                loggedInUserDiv.style.display = "block";
+                userNameSpan.textContent = user.email; // Display user's email
+
+                // Handle logout
+                logoutBtn.addEventListener("click", async (e) => {
+                    e.preventDefault();
+                    try {
+                        await signOut(auth);
+                        // Redirect or update UI after logout
+                        window.location.href = "index.html"; // Redirect to home after logout
+                    } catch (error) {
+                        alert("❌ Logout error: " + error.message);
+                    }
+                });
+
+            } else {
+                // User is signed out
+                authButtons.style.display = "block";
+                loggedInUserDiv.style.display = "none";
+                userNameSpan.textContent = "User"; // Reset user name
+            }
+        });
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+</body>
+
+</html>

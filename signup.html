@@ -269,8 +269,7 @@
     <header>
         <div class="container header-container">
             <div class="logo">
-                <img src="https://via.placeholder.com/50x50" alt="Pathan Ka Hotel">
-
+                <img src="https://via.placeholder.com/50x50" alt="">
             </div>
             <nav>
                 <ul>
@@ -291,7 +290,6 @@
                 <img src="https://via.placeholder.com/80x80" alt="Pathan Ka Hotel Logo">
             </div>
             <h2 class="auth-title">Create Your Account</h2>
-
             <form class="auth-form" id="signupForm">
                 <div class="form-group">
                     <label for="fullName">Full Name</label>
@@ -306,33 +304,28 @@
                 <div class="form-group">
                     <label for="signupPassword">Password</label>
                     <div class="password-field">
-                        <input type="password" id="signupPassword" required placeholder="Create a password">
-                        <span class="password-toggle" id="togglePassword1">
-                            <i class="far fa-eye"></i>
-                        </span>
+                        <input type="password" id="signupPassword" required placeholder="Create a password"
+                            minlength="8">
+                        <span class="password-toggle" id="togglePassword1"><i class="far fa-eye"></i></span>
                     </div>
-                    <small style="color: #666; display: block; margin-top: 5px;">Minimum 8 characters</small>
+                    <small>Minimum 8 characters</small>
                 </div>
 
                 <div class="form-group">
                     <label for="confirmPassword">Confirm Password</label>
                     <div class="password-field">
-                        <input type="password" id="confirmPassword" required placeholder="Confirm your password">
-                        <span class="password-toggle" id="togglePassword2">
-                            <i class="far fa-eye"></i>
-                        </span>
+                        <input type="password" id="confirmPassword" required placeholder="Confirm your password"
+                            minlength="8">
+                        <span class="password-toggle" id="togglePassword2"><i class="far fa-eye"></i></span>
                     </div>
                 </div>
 
-                <div class="form-group" style="text-align: left;">
-                    <input type="checkbox" id="terms" required
-                        style="width: auto; display: inline-block; margin-right: 10px;">
-                    <label for="terms" style="display: inline-block; font-weight: normal;">I agree to the <a href="#"
-                            style="color: #8B0000;">Terms of Service</a> and <a href="#" style="color: #8B0000;">Privacy
-                            Policy</a></label>
+                <div class="form-group">
+                    <input type="checkbox" id="terms" required>
+                    <label for="terms">I agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a></label>
                 </div>
 
-                <button type="submit" class="submit-btn">Create Account</button>
+                <button type="submit" class="submit-btn" id="signupBtn">Create Account</button>
 
                 <div class="auth-footer">
                     Already have an account? <a href="login.html">Login here</a>
@@ -375,67 +368,135 @@
             </div>
         </div>
     </footer>
+    <script type="module" src="js/Firebase.js"></script>
+    <script type="module" src="js/auth.js"></script>
 
-    <script>
+    <script src="js/script.js"></script>
+    <script type="module">
+        // js/signup.js
+        import { auth } from './js/Firebase.js';
+        import { createUserWithEmailAndPassword, updateProfile } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+
+        // DOM elements
+        const elements = {
+            signupForm: document.getElementById('signupForm'),
+            fullName: document.getElementById('fullName'),
+            signupEmail: document.getElementById('signupEmail'),
+            signupPassword: document.getElementById('signupPassword'),
+            confirmPassword: document.getElementById('confirmPassword'),
+            togglePassword1: document.getElementById('togglePassword1'),
+            togglePassword2: document.getElementById('togglePassword2'),
+            terms: document.getElementById('terms'),
+            signupBtn: document.getElementById('signupBtn'),
+            errorMessage: document.getElementById('errorMessage'),
+        };
+
+        // Validate DOM elements
+        if (!Object.values(elements).every(el => el)) {
+            console.error('One or more DOM elements are missing.');
+            alert('An error occurred. Please refresh the page.');
+        }
+
         // Password toggle functionality
-        const togglePassword1 = document.getElementById('togglePassword1');
-        const password1 = document.getElementById('signupPassword');
-        const togglePassword2 = document.getElementById('togglePassword2');
-        const password2 = document.getElementById('confirmPassword');
-
         function togglePasswordVisibility(toggle, password) {
-            toggle.addEventListener('click', function () {
+            if (!toggle || !password) return;
+            toggle.addEventListener('click', () => {
                 const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
                 password.setAttribute('type', type);
-                this.innerHTML = type === 'password' ? '<i class="far fa-eye"></i>' : '<i class="far fa-eye-slash"></i>';
+                toggle.innerHTML = type === 'password' ? '<i class="far fa-eye"></i>' : '<i class="far fa-eye-slash"></i>';
             });
         }
 
-        togglePasswordVisibility(togglePassword1, password1);
-        togglePasswordVisibility(togglePassword2, password2);
+        togglePasswordVisibility(elements.togglePassword1, elements.signupPassword);
+        togglePasswordVisibility(elements.togglePassword2, elements.confirmPassword);
+
+        // Display error message in DOM
+        function showError(message) {
+            elements.errorMessage.textContent = message;
+            elements.errorMessage.style.display = 'block';
+            setTimeout(() => {
+                elements.errorMessage.style.display = 'none';
+            }, 5000);
+        }
 
         // Form submission
-        document.getElementById('signupForm').addEventListener('submit', function (e) {
+        elements.signupForm?.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            // Get form values
-            const fullName = document.getElementById('fullName').value;
-            const email = document.getElementById('signupEmail').value;
-            const password = document.getElementById('signupPassword').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
+            // Get and trim form values
+            const fullName = elements.fullName.value.trim();
+            const email = elements.signupEmail.value.trim();
+            const password = elements.signupPassword.value.trim();
+            const confirmPassword = elements.confirmPassword.value.trim();
 
-            // Simple validation
+            // Client-side validation
             if (!fullName || !email || !password || !confirmPassword) {
-                alert('Please fill in all fields');
+                showError('Please fill in all fields.');
+                return;
+            }
+
+            // Email format validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showError('Please enter a valid email address.');
                 return;
             }
 
             if (password !== confirmPassword) {
-                alert('Passwords do not match');
+                showError('Passwords do not match.');
                 return;
             }
 
             if (password.length < 8) {
-                alert('Password must be at least 8 characters');
+                showError('Password must be at least 8 characters.');
                 return;
             }
 
-            if (!document.getElementById('terms').checked) {
-                alert('You must agree to the terms and conditions');
+            if (!elements.terms.checked) {
+                showError('You must agree to the terms and conditions.');
                 return;
             }
 
-            // Here you would typically send data to server
-            // For demo, we'll just show a success message
-            alert('Account created successfully! Redirecting to login...');
+            // Disable button to prevent multiple submissions
+            elements.signupBtn.disabled = true;
+            elements.signupBtn.textContent = 'Creating account...';
 
-            // Redirect to login page after signup
-            setTimeout(() => {
+            try {
+                // Create user with Firebase Authentication
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                // Update user profile with full name
+                await updateProfile(userCredential.user, { displayName: fullName });
+
+                // Redirect to login page after successful signup
                 window.location.href = 'login.html';
-            }, 1500);
+            } catch (error) {
+                let errorMessage = 'Signup failed. Please try again.';
+                switch (error.code) {
+                    case 'auth/email-already-in-use':
+                        errorMessage = 'This email is already registered.';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = 'Please enter a valid email address.';
+                        break;
+                    case 'auth/weak-password':
+                        errorMessage = 'Password should be at least 6 characters.';
+                        break;
+                    case 'auth/operation-not-allowed':
+                        errorMessage = 'Email/password accounts are not enabled.';
+                        break;
+                    case 'auth/network-request-failed':
+                        errorMessage = 'Network error. Please check your connection.';
+                        break;
+                    default:
+                        console.error('Firebase error:', error);
+                }
+                showError(errorMessage);
+            } finally {
+                elements.signupBtn.disabled = false;
+                elements.signupBtn.textContent = 'Create Account';
+            }
         });
     </script>
-    <script src="js/script.js"></script>
 </body>
 
 </html>
