@@ -79,14 +79,6 @@ function loginUser(userName) {
   updateNavbar();
 }
 
-// Logout function
-function logoutUser() {
-  localStorage.removeItem("isLoggedIn");
-  localStorage.removeItem("userName");
-  updateNavbar();
-  // Redirect to home page after logout
-  window.location.href = "index.html";
-}
 
 // Initialize navbar on page load
 document.addEventListener("DOMContentLoaded", function () {

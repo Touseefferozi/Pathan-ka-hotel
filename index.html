@@ -103,75 +103,11 @@
 
     <!-- Signup Modal -->
 
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="js/script.js"></script>
     <!-- <script type="module" src="js/Firebase.js"></script> -->
     <script type="module" src="js/auth.js"></script>
-    <script type="module">
-        import { auth, onAuthStateChanged, signOut } from "./js/Firebase.js";
-
-        const authButtons = document.getElementById("authButtons");
-        const loggedInUserDiv = document.getElementById("loggedInUser");
-        const userNameSpan = document.getElementById("userName");
-        const logoutBtn = document.getElementById("logoutBtn");
-
-        // Open login modal
-        loginBtn.onclick = function () {
-            loginModal.style.display = "block";
-            signupModal.style.display = "none";
-        }
-
-        // Open signup modal
-        signupBtn.onclick = function () {
-            signupModal.style.display = "block";
-            loginModal.style.display = "none";
-        }
-
-        // Close modals when clicking X
-        for (let i = 0; i < closeButtons.length; i++) {
-            closeButtons[i].onclick = function () {
-                loginModal.style.display = "none";
-                signupModal.style.display = "none";
-            }
-        }
-
-        // Switch between login and signup
-        switchToSignup.onclick = function (e) {
-            e.preventDefault();
-            loginModal.style.display = "none";
-            signupModal.style.display = "block";
-        }
-
-        switchToLogin.onclick = function (e) {
-            e.preventDefault();
-            signupModal.style.display = "none";
-            loginModal.style.display = "block";
-        }
-
-        // Close modals when clicking outside
-        window.onclick = function (event) {
-            if (event.target == loginModal) {
-                loginModal.style.display = "none";
-            }
-            if (event.target == signupModal) {
-                signupModal.style.display = "none";
-            }
-        }
-
-        // Form submission (basic example)
-        document.getElementById("loginForm").onsubmit = function (e) {
-            e.preventDefault();
-            alert("Login functionality would be implemented here");
-            loginModal.style.display = "none";
-        }
-
-        document.getElementById("signupForm").onsubmit = function (e) {
-            e.preventDefault();
-            alert("Signup functionality would be implemented here");
-            signupModal.style.display = "none";
-        }
-    </script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 </body>
 
 </html>
