@@ -2,11 +2,9 @@ import { auth } from "./Firebase.js";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  onAuthStateChanged, // Import onAuthStateChanged
-  signOut // Import signOut for logout functionality
+  onAuthStateChanged,
+  signOut,
 } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-
-import { updateNavbar } from "./script.js"; // Import updateNavbar from script.js
 
 // 🔒 Signup Handler
 const signupForm = document.getElementById("signupForm");
@@ -28,7 +26,7 @@ if (signupForm) {
       alert("✅ سائن اپ کامیاب!");
       window.location.href = "login.html";
     } catch (error) {
-    alert("❌ سائن اپ کی خرابی: " + error.message);
+      alert("❌ سائن اپ کی خرابی: " + error.message);
     }
   });
 }
@@ -45,41 +43,64 @@ if (loginForm) {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       alert("✅ لاگ ان کامیاب!");
-      // Redirect is handled by onAuthStateChanged listener below
     } catch (error) {
-    alert("❌ لاگ ان کی خرابی: " + error.message);
+      alert("❌ لاگ ان کی خرابی: " + error.message);
     }
   });
 }
 
-// Listen for authentication state changes
+// Authentication state UI handling
+const loginBtn = document.querySelector(".login-btn");
+const signupBtn = document.querySelector(".signup-btn");
+const loggedInUser = document.getElementById("loggedInUser");
+const userNameSpan = document.getElementById("userName");
+const logoutBtn = document.getElementById("logoutBtn");
+
 onAuthStateChanged(auth, (user) => {
-  updateNavbar(); // Call updateNavbar whenever auth state changes
+  // Optional if you use it elsewhere
 
-  // Redirect logged-in users from login/signup pages
-  if (user && (window.location.pathname.includes('login.html') || window.location.pathname.includes('signup.html'))) {
-    window.location.href = "index.html";
-  }
+  if (user) {
+    loginBtn && (loginBtn.style.display = "none");
+    signupBtn && (signupBtn.style.display = "none");
+    loggedInUser && (loggedInUser.style.display = "inline");
+    userNameSpan && (userNameSpan.textContent = user.email.split("@")[0]);
 
-  // Redirect logged-out users from protected pages (e.g., dashboard, checkout)
-  // Add more protected pages as needed
-  const protectedPages = ['deshboard.html', 'Checkout.html', 'cart.html'];
-  const isProtectedPage = protectedPages.some(page => window.location.pathname.includes(page));
-
-  if (!user && isProtectedPage) {
-      window.location.href = "login.html";
-  }
-});
-
-// Handle logout globally
-document.addEventListener("click", async (e) => {
-    if (e.target && e.target.id === 'logoutBtn') {
-        e.preventDefault();
-        try {
-            await signOut(auth);
-            // Redirect is handled by onAuthStateChanged listener
-        } catch (error) {
-            alert("❌ Logout error: " + error.message);
-        }
+    // Redirect from login/signup pages if logged in
+    if (
+      window.location.pathname.includes("login.html") ||
+      window.location.pathname.includes("signup.html")
+    ) {
+      window.location.href = "index.html";
     }
+  } else {
+    loginBtn && (loginBtn.style.display = "inline-block");
+    signupBtn && (signupBtn.style.display = "inline-block");
+    loggedInUser && (loggedInUser.style.display = "none");
+
+    // Redirect to login if on protected page
+    const protectedPages = ["deshboard.html", "Checkout.html", "cart.html"];
+    const isProtected = protectedPages.some((page) =>
+      window.location.pathname.includes(page)
+    );
+    if (isProtected) {
+      window.location.href = "login.html";
+    }
+  }
 });
+
+// Logout
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", async (e) => {
+    e.preventDefault();
+    try {
+      await signOut(auth);
+      alert("You have been logged out.");
+      window.location.href = "index.html";
+    } catch (error) {
+      console.error("Logout error:", error);
+      alert("Logout failed.");
+    }
+  });
+}
+
+// Export it so other files can import

@@ -354,9 +354,9 @@
                 <ul>
                     <li><a href="index.html">Home</a></li>
                     <li><a href="menu.html">Menu</a></li>
-                    <li><a href="#">About Us</a></li>
+                    <li><a href="AboutUs.html">About Us</a></li>
                     <li><a href="Gallery.html">Gallery</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="Contact.html">Contact</a></li>
                 </ul>
             </nav>
             <div class="auth-buttons" id="authButtons">
@@ -455,88 +455,8 @@
         </div>
     </footer>
 
-    <script type="module">
-        import { auth, signInWithEmailAndPassword } from './js/Firebase.js';
+    <script type="module" src="./js/auth.js"></script>
 
-        // DOM Elements
-        const loginForm = document.getElementById('loginForm');
-        const loginEmail = document.getElementById('loginEmail');
-        const loginPassword = document.getElementById('loginPassword');
-        const togglePassword = document.getElementById('togglePassword');
-        const loginBtn = document.getElementById('loginBtn');
-        const errorMessage = document.getElementById('errorMessage');
-
-        // Toggle password visibility
-        if (togglePassword) {
-            togglePassword.addEventListener('click', function () {
-                const type = loginPassword.getAttribute('type') === 'password' ? 'text' : 'password';
-                loginPassword.setAttribute('type', type);
-                this.innerHTML = type === 'password' ? '<i class="far fa-eye"></i>' : '<i class="far fa-eye-slash"></i>';
-            });
-        }
-
-        // Show error message
-        function showError(message) {
-            errorMessage.textContent = message;
-            errorMessage.style.display = 'block';
-            setTimeout(() => {
-                errorMessage.style.display = 'none';
-            }, 5000);
-        }
-
-        // Handle login form submission
-        if (loginForm) {
-            loginForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-
-                const email = loginEmail.value.trim();
-                const password = loginPassword.value;
-
-                // Validate inputs
-                if (!email || !password) {
-                    showError('Please enter both email and password');
-                    return;
-                }
-
-                // Disable button during login attempt
-                loginBtn.disabled = true;
-                loginBtn.textContent = 'Logging in...';
-
-                try {
-                    // Sign in with Firebase
-                    await signInWithEmailAndPassword(auth, email, password);
-
-                    // Redirect to home page after successful login
-                    window.location.href = 'index.html';
-                } catch (error) {
-                    let errorMsg = 'Login failed. Please try again.';
-
-                    switch (error.code) {
-                        case 'auth/invalid-email':
-                            errorMsg = 'Invalid email address format.';
-                            break;
-                        case 'auth/user-disabled':
-                            errorMsg = 'This account has been disabled.';
-                            break;
-                        case 'auth/user-not-found':
-                        case 'auth/wrong-password':
-                            errorMsg = 'Invalid email or password.';
-                            break;
-                        case 'auth/too-many-requests':
-                            errorMsg = 'Too many attempts. Try again later.';
-                            break;
-                        case 'auth/network-request-failed':
-                            errorMsg = 'Network error. Please check your connection.';
-                            break;
-                    }
-
-                    showError(errorMsg);
-                    loginBtn.disabled = false;
-                    loginBtn.textContent = 'Login';
-                }
-            });
-        }
-    </script>
 </body>
 
 </html>

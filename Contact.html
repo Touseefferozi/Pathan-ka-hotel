@@ -221,23 +221,21 @@
                 <ul>
                     <li><a href="index.html">Home</a></li>
                     <li><a href="menu.html">Menu</a></li>
-                    <li><a href="#">About Us</a></li>
+                    <li><a href="AboutUs.html">About Us</a></li>
                     <li><a href="Gallery.html">Gallery</a></li>
-
+                    <li><a href="deshboard.html">Deshboard</a></li>
                     <li><a href="Contact.html">Contact</a></li>
                 </ul>
             </nav>
             <div class="auth-buttons" id="authButtons">
-                <!-- Default state (shown when not logged in) -->
                 <a href="login.html" class="login-btn">Login</a>
                 <a href="signup.html" class="signup-btn">Sign Up</a>
-
-                <!-- Logged in state (hidden by default) -->
-                <div class="logged-in" id="loggedInUser" style="display: none;">
-                    <span class="user-name" id="userName"></span>
-                    <button class="logout-btn" id="logoutBtn">Logout</button>
+                <div id="loggedInUser" style="display: none;">
+                    Welcome, <span id="userName">User</span> |
+                    <a href="#" id="logoutBtn">Logout</a>
                 </div>
             </div>
+
         </div>
     </header>
 
@@ -385,6 +383,8 @@
     <!-- close  -->
 
     <script src="js/script.js"></script>
+    <script type="module" src="js/auth.js"></script>
+
     <script>
         // Form submission handling
         document.getElementById('contactForm').addEventListener('submit', function (e) {

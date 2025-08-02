@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pathan Ka Hotel - About Us</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <!-- Header with Navigation -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="https://via.placeholder.com/50x50" alt="Pathan Ka Hotel ">
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="menu.html">Menu</a></li>
+                    <li><a href="AboutUs.html">About Us</a></li>
+                    <li><a href="Gallery.html">Gallery</a></li>
+                    <li><a href="deshboard.html">Deshboard</a></li>
+                    <li><a href="Contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons" id="authButtons">
+                <!-- Default state (shown when not logged in) -->
+                <a href="login.html" class="login-btn">Login</a>
+                <a href="signup.html" class="signup-btn">Sign Up</a>
+
+                <!-- Logged in state (hidden by default) -->
+                <div class="logged-in" id="loggedInUser" style="display: none;">
+                    <span class="user-name" id="userName"></span>
+                    <button class="logout-btn" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- About Us Banner -->
+    <section class="banner about-us-banner">
+        <div class="container banner-content">
+            <h1>About Us</h1>
+        </div>
+    </section>
+
+    <!-- History Section -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Our History</h2>
+            <div class="about-content">
+                <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                    alt="Restaurant Interior" class="about-image">
+                <div class="about-text">
+                    <p>Pathan Ka Hotel was founded in 1995 with a vision to bring the authentic flavors and warm
+                        hospitality of the Pathan culture to the heart of the city. Our journey began in a humble
+                        setting, with a few traditional dishes passed down through generations.</p>
+                    <p>Over the years, we have grown, but our commitment to quality, tradition, and providing a
+                        memorable dining experience has remained unwavering. We source the finest ingredients and
+                        prepare each dish with care and passion, staying true to the rich culinary heritage of the
+                        Pathan region.</p>
+                    <p>From our signature kebabs to our aromatic biryanis, every dish tells a story of tradition and
+                        flavor. We are proud of our history and look forward to continuing to serve our community with
+                        the same dedication and warmth that has defined us for decades.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="section bg-light">
+        <div class="container">
+            <h2 class="section-title">Our Mission</h2>
+            <div class="about-content reverse">
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71" alt="Chef Preparing Food"
+                    class="about-image">
+                <div class="about-text">
+                    <p>Our mission is to provide an authentic and unforgettable culinary experience that celebrates the
+                        rich flavors and traditions of Pathan cuisine. We are dedicated to using fresh, high-quality
+                        ingredients and preparing each dish with passion and expertise.</p>
+                    <p>We strive to create a welcoming and warm atmosphere where every guest feels like a part of our
+                        family. Our goal is to share the taste of our heritage and create lasting memories for our
+                        customers through exceptional food and service.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Pathan Ka Hotel</h3>
+                    <p>Bringing authentic Pathan flavors to your table since 1995. Our commitment to quality and
+                        tradition makes us unique.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="menu.html">Menu</a></li>
+                        <li><a href="AboutUs.html">About Us</a></li>
+                        <li><a href="Gallery.html">Gallery</a></li>
+                        <li><a href="Contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li>123 Food Street, City</li>
+                        <li>Phone: +123 456 7890</li>
+                        <li>Email: info@pathankahotel.com</li>
+                        <li>Open: 10AM - 11PM Daily</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Pathan Ka Hotel. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="js/script.js"></script>
+    <script type="module" src="js/auth.js"></script>
+
+
+</body>
+
+</html>

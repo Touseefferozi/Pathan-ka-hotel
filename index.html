@@ -20,8 +20,9 @@
                 <ul>
                     <li><a href="index.html">Home</a></li>
                     <li><a href="menu.html">Menu</a></li>
-                    <li><a href="#">About Us</a></li>
+                    <li><a href="AboutUs.html">About Us</a></li>
                     <li><a href="Gallery.html">Gallery</a></li>
+                    <li><a href="deshboard.html">Deshboard</a></li>
 
                     <li><a href="Contact.html">Contact</a></li>
                 </ul>
@@ -32,9 +33,9 @@
                 <a href="signup.html" class="signup-btn">Sign Up</a>
 
                 <!-- Logged in state (hidden by default) -->
-                <div id="loggedInUser" style="display: none;">
-                    Welcome, <span id="userName">User</span> |
-                    <a href="" id="logoutBtn">Logout</a>
+                <div class="logged-in" id="loggedInUser" style="display: none;">
+                    <span class="user-name" id="userName"></span>
+                    <button class="logout-btn" id="logoutBtn">Logout</button>
                 </div>
             </div>
         </div>
@@ -47,6 +48,84 @@
             <p>Experience the rich flavors and traditions of Pathan hospitality with our carefully crafted dishes made
                 from generations-old recipes.</p>
             <a href="Menu.html" class="cta-button">View Our Menu</a>
+        </div>
+    </section>
+
+    <!-- New Items Section -->
+    <section class="section new-items-section">
+        <div class="container">
+            <h2 class="section-title">New Items</h2>
+            <div class="card-container">
+                <!-- New Item Card 1 -->
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                        alt="New Item 1">
+                    <div class="card-content">
+                        <h3>Spicy Chicken Wings</h3>
+                        <p>Crispy chicken wings tossed in a fiery sauce, a perfect starter.</p>
+                        <span class="price">₹300</span>
+                    </div>
+                </div>
+                <!-- New Item Card 2 -->
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                        alt="New Item 2">
+                    <div class="card-content">
+                        <h3>Vegetable Samosas</h3>
+                        <p>Flaky pastries filled with spiced potatoes and peas, served with chutney.</p>
+                        <span class="price">₹150</span>
+                    </div>
+                </div>
+                <!-- New Item Card 3 -->
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                        alt="New Item 3">
+                    <div class="card-content">
+                        <h3>Fresh Garden Salad</h3>
+                        <p>A refreshing mix of seasonal greens, vegetables, and a light vinaigrette.</p>
+                        <span class="price">₹200</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pro Items Section -->
+    <section class="section pro-items-section">
+        <div class="container">
+            <h2 class="section-title">Pro Items</h2>
+            <div class="card-container">
+                <!-- Pro Item Card 1 -->
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                        alt="Pro Item 1">
+                    <div class="card-content">
+                        <h3>Special Kebab Platter</h3>
+                        <p>An exquisite selection of our finest kebabs, marinated and grilled to perfection.</p>
+                        <span class="price">₹850</span>
+                    </div>
+                </div>
+                <!-- Pro Item Card 2 -->
+                <div class="card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrDzO20Utnw3mYoc1dQNSiL3sYRemMNpRg0A&s"
+                        alt="Pro Item 2">
+                    <div class="card-content">
+                        <h3>Luxury Biryani</h3>
+                        <p>Our signature biryani with premium ingredients and a rich, aromatic flavor.</p>
+                        <span class="price">₹700</span>
+                    </div>
+                </div>
+                <!-- Pro Item Card 3 -->
+                <div class="card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-dfRXQCPZeRTz9ZGBfCOMPb-vnv2yVfHwww&s"
+                        alt="Pro Item 3">
+                    <div class="card-content">
+                        <h3>Chef's Special Curry</h3>
+                        <p>A unique and flavorful curry created by our head chef, a true culinary masterpiece.</p>
+                        <span class="price">₹950</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -103,11 +182,11 @@
 
     <!-- Signup Modal -->
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="js/script.js"></script>
+
+    <script type="module" src="js/script.js"></script>
     <!-- <script type="module" src="js/Firebase.js"></script> -->
     <script type="module" src="js/auth.js"></script>
+
 </body>
 
 </html>

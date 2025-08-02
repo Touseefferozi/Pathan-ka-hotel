@@ -19,8 +19,8 @@
                 <ul>
                     <li><a href="index.html">Home</a></li>
                     <li><a href="menu.html">Menu</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Gallery</a></li>
+                    <li><a href="AboutUs.html">About Us</a></li>
+                    <li><a href="Gallery.html">Gallery</a></li>
                     <li><a href="Contact.html">Contact</a></li>
                 </ul>
             </nav>
@@ -71,6 +71,16 @@
                 </form>
             </div>
 
+            <div class="order-summary">
+                <h2>Order Summary</h2>
+                <div id="order-summary-items">
+                    <!-- Cart items will be loaded here dynamically -->
+                </div>
+                <div class="order-total">
+                    <strong>Total:</strong> <span id="order-total-amount">$0.00</span>
+                </div>
+            </div>
+
             <button class="place-order-btn">Place Order</button>
         </div>
     </section>
@@ -113,6 +123,8 @@
             </div>
         </div>
     </footer>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/script.js"></script>
 
     <script>
         // JavaScript for checkout functionality will go here
@@ -138,44 +150,7 @@
     </script>
     <script type="module" src="js/Firebase.js"></script>
     <script type="module" src="js/auth.js"></script>
-    <script type="module">
-        import { auth, onAuthStateChanged, signOut } from "./js/Firebase.js";
 
-        const authButtons = document.getElementById("authButtons");
-        const loggedInUserDiv = document.getElementById("loggedInUser");
-        const userNameSpan = document.getElementById("userName");
-        const logoutBtn = document.getElementById("logoutBtn");
-
-        // Listen for authentication state changes
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                // User is signed in
-                authButtons.style.display = "none";
-                loggedInUserDiv.style.display = "block";
-                userNameSpan.textContent = user.email; // Display user's email
-
-                // Handle logout
-                logoutBtn.addEventListener("click", async (e) => {
-                    e.preventDefault();
-                    try {
-                        await signOut(auth);
-                        // Redirect or update UI after logout
-                        window.location.href = "index.html"; // Redirect to home after logout
-                    } catch (error) {
-                        alert("❌ Logout error: " + error.message);
-                    }
-                });
-
-            } else {
-                // User is signed out
-                authButtons.style.display = "block";
-                loggedInUserDiv.style.display = "none";
-                userNameSpan.textContent = "User"; // Reset user name
-            }
-        });
-    </script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 </body>
 
 </html>

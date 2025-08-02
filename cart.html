@@ -19,8 +19,8 @@
                 <ul>
                     <li><a href="index.html">Home</a></li>
                     <li><a href="menu.html">Menu</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Gallery</a></li>
+                    <li><a href="AboutUs.html">About Us</a></li>
+                    <li><a href="Gallery.html">Gallery</a></li>
                     <li><a href="Contact.html">Contact</a></li>
                 </ul>
             </nav>
@@ -90,138 +90,6 @@
         </div>
     </footer>
     <script src="script.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const cartItemsContainer = document.getElementById('cart-items');
-            const cartSummaryContainer = document.getElementById('cart-summary');
-            const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-
-            if (cartItems.length === 0) {
-                cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
-                cartSummaryContainer.innerHTML = ''; // Clear summary if cart is empty
-            } else {
-                let total = 0;
-                cartItems.forEach(item => {
-                    const itemElement = document.createElement('div');
-                    itemElement.classList.add('cart-item');
-                    // Assuming item.price is in the format "₹XXX"
-                    const price = parseFloat(item.price.replace('₹', ''));
-                    const itemTotal = price * item.quantity;
-                    total += itemTotal;
-
-                    itemElement.innerHTML = `
-                        <div class="item-details">
-                            <h3 class="item-name">${item.name}</h3>
-                            <p class="item-price">${item.price} x <span class="item-quantity">${item.quantity}</span> = ₹${itemTotal.toFixed(2)}</p>
-                        </div>
-                        <div class="item-actions">
-                            <button class="edit-item" data-item-name="${item.name}">Edit</button>
-                            <button class="delete-item" data-item-name="${item.name}">Delete</button>
-                        </div>
-                    `;
-                    cartItemsContainer.appendChild(itemElement);
-                });
-
-                cartSummaryContainer.innerHTML = `
-                    <p><strong>Total: ₹${total.toFixed(2)}</strong></p>
-                    <button class="checkout-btn">Proceed to Checkout</button>
-                `;
-
-                // Add event listeners for edit and delete buttons
-                document.querySelectorAll('.delete-item').forEach(button => {
-                    button.addEventListener('click', function () {
-                        const itemName = this.dataset.itemName;
-                        deleteItemFromCart(itemName);
-                    });
-                });
-
-                document.querySelectorAll('.edit-item').forEach(button => {
-                    button.addEventListener('click', function () {
-                        const itemName = this.dataset.itemName;
-                        editItemQuantity(itemName);
-                    });
-                });
-
-
-                // Add event listener to the checkout button
-                document.querySelector('.checkout-btn').addEventListener('click', () => {
-                    window.location.href = 'Checkout.html';
-                });
-            }
-        });
-
-        function deleteItemFromCart(itemName) {
-            let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-            cartItems = cartItems.filter(item => item.name !== itemName);
-            localStorage.setItem('cartItems', JSON.stringify(cartItems));
-            // Reload the page to update the cart display
-            window.location.reload();
-        }
-
-        function editItemQuantity(itemName) {
-            let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-            const itemIndex = cartItems.findIndex(item => item.name === itemName);
-
-            if (itemIndex > -1) {
-                const newQuantity = prompt(`Enter new quantity for ${itemName}:`, cartItems[itemIndex].quantity);
-                const quantity = parseInt(newQuantity);
-
-                if (!isNaN(quantity) && quantity >= 0) {
-                    if (quantity === 0) {
-                        // If quantity is 0, remove the item
-                        deleteItemFromCart(itemName);
-                    } else {
-                        cartItems[itemIndex].quantity = quantity;
-                        localStorage.setItem('cartItems', JSON.stringify(cartItems));
-                        // Reload the page to update the cart display
-                        window.location.reload();
-                    }
-                } else {
-                    alert('Invalid quantity entered.');
-                }
-            }
-        }
-    </script>
-    <script type="module" src="js/Firebase.js"></script>
-    <script type="module" src="js/auth.js"></script>
-    <script type="module">
-        import { auth, onAuthStateChanged, signOut } from "./js/Firebase.js";
-
-        const authButtons = document.getElementById("authButtons");
-        const loggedInUserDiv = document.getElementById("loggedInUser");
-        const userNameSpan = document.getElementById("userName");
-        const logoutBtn = document.getElementById("logoutBtn");
-
-        // Listen for authentication state changes
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                // User is signed in
-                authButtons.style.display = "none";
-                loggedInUserDiv.style.display = "block";
-                userNameSpan.textContent = user.email; // Display user's email
-
-                // Handle logout
-                logoutBtn.addEventListener("click", async (e) => {
-                    e.preventDefault();
-                    try {
-                        await signOut(auth);
-                        // Redirect or update UI after logout
-                        window.location.href = "index.html"; // Redirect to home after logout
-                    } catch (error) {
-                        alert("❌ Logout error: " + error.message);
-                    }
-                });
-
-            } else {
-                // User is signed out
-                authButtons.style.display = "block";
-                loggedInUserDiv.style.display = "none";
-                userNameSpan.textContent = "User"; // Reset user name
-            }
-        });
-    </script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 </body>
 
 </html>

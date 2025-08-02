@@ -1,3 +1,4 @@
+// Firebase imports
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
 import {
   getAuth,
@@ -7,6 +8,7 @@ import {
   signOut,
 } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyBbl2BEn6dYAhig1haBftR4mVfgQscepp8",
   authDomain: "future-synapse-450311-r9.firebaseapp.com",
@@ -17,23 +19,21 @@ const firebaseConfig = {
   measurementId: "G-S3XXGR0PMP",
 };
 
-// Firebase Initialization (should be in Fireb
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
-
-// Improved Cart Manager with Error Handling
+// Cart Manager
 class CartManager {
-  static CART_KEY = "cartItems_v2"; // Changed key to avoid conflicts with old data
+  static CART_KEY = "cartItems_v2";
 
   static getCart() {
     try {
       const cart = localStorage.getItem(this.CART_KEY);
       return cart ? JSON.parse(cart) : [];
-    } catch (error) {
-      console.error("Failed to read cart:", error);
-      localStorage.removeItem(this.CART_KEY); // Clear corrupt data
+    } catch (err) {
+      console.error("Corrupted cart, clearing...", err);
+      localStorage.removeItem(this.CART_KEY);
       return [];
     }
   }
@@ -42,29 +42,24 @@ class CartManager {
     try {
       localStorage.setItem(this.CART_KEY, JSON.stringify(cartItems));
       return true;
-    } catch (error) {
-      console.error("Failed to save cart:", error);
+    } catch (err) {
+      console.error("Error saving cart:", err);
       return false;
     }
   }
 
   static addItem(newItem) {
-    if (!newItem || !newItem.id) {
-      console.error("Invalid item format:", newItem);
+    if (!newItem || !newItem.id || !newItem.name || !newItem.price) {
+      console.error("Invalid item", newItem);
       return false;
     }
 
     const cart = this.getCart();
-    const existingIndex = cart.findIndex((item) => item.id === newItem.id);
+    const existing = cart.find((item) => item.id === newItem.id);
 
-    if (existingIndex >= 0) {
-      cart[existingIndex].quantity += newItem.quantity;
+    if (existing) {
+      existing.quantity += newItem.quantity;
     } else {
-      // Validate required fields
-      if (!newItem.name || !newItem.price) {
-        console.error("Missing required item fields:", newItem);
-        return false;
-      }
       cart.push(newItem);
     }
 
@@ -72,116 +67,75 @@ class CartManager {
   }
 }
 
-// Enhanced Add to Cart Functionality
+// Add to cart with auth check
 async function handleAddToCart(button) {
   try {
-    // 1. Validate quantity
     const quantityElement = button.parentElement.querySelector(".quantity");
-    if (!quantityElement) {
-      throw new Error("Quantity element not found");
-    }
+    const quantity = parseInt(quantityElement?.textContent || 0);
+    if (quantity <= 0) return alert("Select at least 1 quantity");
 
-    const quantity = parseInt(quantityElement.textContent);
-    if (isNaN(quantity)) {
-      throw new Error("Invalid quantity value");
-    }
-    if (quantity <= 0) {
-      alert("Please select at least 1 quantity");
-      return false;
-    }
-
-    // 2. Check authentication
-    const user = await new Promise((resolve) => {
-      const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-        unsubscribe();
-        resolve(user);
-      });
-    });
-
+    const user = await new Promise((resolve) =>
+      onAuthStateChanged(auth, (u) => {
+        resolve(u);
+      })
+    );
     if (!user) {
-      const currentUrl = encodeURIComponent(window.location.href);
-      window.location.href = `login.html?redirect=${currentUrl}`;
-      return false;
+      window.location.href = `login.html?redirect=${encodeURIComponent(
+        location.href
+      )}`;
+      return;
     }
 
-    // 3. Get item details with validation
     const itemElement = button.closest(".menu-item");
-    if (!itemElement) {
-      throw new Error("Menu item container not found");
-    }
-
-    const itemName = itemElement.querySelector(".item-name")?.textContent;
-    const itemPrice = itemElement.querySelector(".item-price")?.textContent;
-    const itemImage = itemElement.querySelector("img")?.src || "";
-    const itemId =
-      itemElement.dataset.id ||
+    const name = itemElement?.querySelector(".item-name")?.textContent;
+    const price = itemElement?.querySelector(".item-price")?.textContent;
+    const image = itemElement?.querySelector("img")?.src || "";
+    const id =
+      itemElement?.dataset.id ||
       `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
-    if (!itemName || !itemPrice) {
-      throw new Error("Missing required item information");
-    }
+    if (!name || !price) throw new Error("Missing item info");
 
-    // 4. Create cart item
-    const cartItem = {
-      id: itemId,
-      name: itemName,
-      price: itemPrice,
-      quantity: quantity,
-      image: itemImage,
+    const item = {
+      id,
+      name,
+      price,
+      quantity,
+      image,
       addedAt: new Date().toISOString(),
     };
 
-    // 5. Add to cart
-    const success = CartManager.addItem(cartItem);
-    if (!success) {
-      throw new Error("Failed to save item to cart");
+    if (CartManager.addItem(item)) {
+      showCartNotification(`${quantity} ${name} added to cart!`);
+    } else {
+      throw new Error("Add to cart failed");
     }
-
-    // 6. Show success feedback
-    showCartNotification(`${quantity} ${itemName} added to cart!`);
-    return true;
-  } catch (error) {
-    console.error("Add to cart error:", error);
+  } catch (err) {
+    console.error(err);
     showCartNotification("Failed to add item to cart", true);
-    return false;
   }
 }
 
-// UI Feedback Functions
+// Notifications
 function showCartNotification(message, isError = false) {
-  // Remove existing notifications
   const existing = document.querySelector(".cart-notification");
   if (existing) existing.remove();
 
-  // Create new notification
-  const notification = document.createElement("div");
-  notification.className = `cart-notification ${isError ? "error" : "success"}`;
-  notification.textContent = message;
-  document.body.appendChild(notification);
+  const div = document.createElement("div");
+  div.className = `cart-notification ${isError ? "error" : "success"}`;
+  div.textContent = message;
+  document.body.appendChild(div);
 
-  // Auto-remove after 3 seconds
   setTimeout(() => {
-    notification.style.opacity = "0";
-    setTimeout(() => notification.remove(), 300);
+    div.style.opacity = "0";
+    setTimeout(() => div.remove(), 300);
   }, 3000);
 }
 
-// Initialize Add to Cart Buttons
-function initializeCartButtons() {
-  document.querySelectorAll(".add-to-cart").forEach((button) => {
-    // Remove existing listeners to prevent duplicates
-    button.removeEventListener("click", handleAddToCart);
-    button.addEventListener("click", () => handleAddToCart(button));
-  });
-}
-
-// Add CSS for notifications
 function addNotificationStyles() {
-  const styleId = "cart-notification-styles";
-  if (document.getElementById(styleId)) return;
-
+  if (document.getElementById("cart-notification-styles")) return;
   const style = document.createElement("style");
-  style.id = styleId;
+  style.id = "cart-notification-styles";
   style.textContent = `
     .cart-notification {
       position: fixed;
@@ -191,16 +145,12 @@ function addNotificationStyles() {
       border-radius: 4px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.2);
       z-index: 1000;
-      animation: fadeIn 0.3s;
       color: white;
       transition: opacity 0.3s;
+      animation: fadeIn 0.3s;
     }
-    .cart-notification.success {
-      background: #28a745;
-    }
-    .cart-notification.error {
-      background: #dc3545;
-    }
+    .cart-notification.success { background: #28a745; }
+    .cart-notification.error { background: #dc3545; }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
@@ -209,16 +159,21 @@ function addNotificationStyles() {
   document.head.appendChild(style);
 }
 
-// Initialize everything when DOM loads
+// Attach listeners
+function initializeCartButtons() {
+  document.querySelectorAll(".add-to-cart").forEach((button) => {
+    button.removeEventListener("click", () => handleAddToCart(button)); // Avoid duplicate binding
+    button.addEventListener("click", () => handleAddToCart(button));
+  });
+}
+
+// Run on page load
 document.addEventListener("DOMContentLoaded", () => {
   addNotificationStyles();
   initializeCartButtons();
 });
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
+// Export Firebase auth
 export {
   auth,
   signInWithEmailAndPassword,

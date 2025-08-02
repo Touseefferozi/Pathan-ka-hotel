@@ -21,7 +21,7 @@
                 <ul>
                     <li><a href="index.html">Home</a></li>
                     <li><a href="menu.html">Menu</a></li>
-                    <li><a href="#">About Us</a></li>
+                    <li><a href="AboutUs.html">About Us</a></li>
                     <li><a href="Gallery.html">Gallery</a></li>
 
                     <li><a href="Contact.html">Contact</a></li>
@@ -405,75 +405,50 @@
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="js/script.js"></script>
-    <script type="module" src="js/Firebase.js"></script>
+    <script type="module" src="js/script.js"></script>
+    <!-- <script type="module" src="js/Firebase.js"></script> -->
     <script type="module" src="js/auth.js"></script>
-    <script>
-        // Quantity controls functionality
-        document.querySelectorAll('.quantity-btn').forEach(button => {
-            button.addEventListener('click', function () {
-                const isPlus = this.classList.contains('plus');
-                const quantityElement = this.parentElement.querySelector('.quantity');
-                let quantity = parseInt(quantityElement.textContent);
+    <script type="module">
+        // This script handles the category filtering on the menu page.
+        // When a category button is clicked, it shows/hides menu sections
+        // and items based on their data-category attributes.
 
-                if (isPlus) {
-                    quantity++;
-                } else if (quantity > 0) {
-                    quantity--;
-                }
+       // nav js 
+        import { auth, onAuthStateChanged, signOut } from './js/Firebase.js';
 
-                quantityElement.textContent = quantity;
-            });
+        onAuthStateChanged(auth, (user) => {
+            const authButtons = document.getElementById("authButtons");
+            const loggedInUser = document.getElementById("loggedInUser");
+            const userNameSpan = document.getElementById("userName");
+
+            if (user) {
+                // Show user info in navbar
+                authButtons.querySelector(".login-btn").style.display = "none";
+                authButtons.querySelector(".signup-btn").style.display = "none";
+                loggedInUser.style.display = "flex";
+                userNameSpan.textContent = user.email.split("@")[0];
+            } else {
+                // Redirect to login if not logged in
+                window.location.href = "login.html";
+            }
         });
 
-        // Add to cart functionality - MODIFIED VERSION
-        document.querySelectorAll('.add-to-cart').forEach(button => {
-            button.addEventListener('click', async function () {
-                // First check quantity
-                const quantity = parseInt(this.parentElement.querySelector('.quantity').textContent);
-                if (quantity <= 0) {
-                    alert('Please select at least 1 quantity');
-                    return;
-                }
-
-                // Then check login status
-                const isLoggedIn = await checkLoginStatus(); // Assuming checkLoginStatus might be async
-                if (!isLoggedIn) {
-                    alert('Please login to add items to the cart.');
-                    window.location.href = 'login.html?redirect=cart.html'; // Add redirect parameter
-                    return;
-                }
-
-                // Process cart items
-                const itemElement = this.closest('.menu-item');
-                const itemName = itemElement.querySelector('.item-name').textContent;
-                const itemPrice = itemElement.querySelector('.item-price').textContent;
-
-                // Get or initialize cart
-                const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-
-                // Update existing item or add new one
-                const existingItemIndex = cartItems.findIndex(item => item.name === itemName);
-                if (existingItemIndex > -1) {
-                    cartItems[existingItemIndex].quantity += quantity;
-                } else {
-                    cartItems.push({
-                        name: itemName,
-                        price: itemPrice,
-                        quantity: quantity,
-                        image: itemElement.querySelector('img')?.src || '' // Add image if available
-                    });
-                }
-
-                // Save cart
-                localStorage.setItem('cartItems', JSON.stringify(cartItems));
-
-                // Redirect to cart page
-                window.location.href = 'cart.html';
-            });
+        // ✅ Logout function
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+            signOut(auth)
+                .then(() => {
+                    alert("You have been logged out.");
+                    window.location.href = "login.html";
+                })
+                .catch((error) => {
+                    console.error("Logout error:", error);
+                    alert("Logout failed: " + error.message);
+                });
         });
 
-        // Category filter functionality - OPTIMIZED
+        //close
+        
+        //menu page js 
         document.querySelectorAll('.category-btn').forEach(button => {
             button.addEventListener('click', function () {
                 // Update active button
@@ -500,14 +475,30 @@
                 });
             });
         });
-        async function checkLoginStatus() {
-            return new Promise((resolve) => {
-                firebase.auth().onAuthStateChanged((user) => {
-                    resolve(!!user);
-                });
-            });
-        }
 
+        // This script handles the quantity control for menu items.
+        document.querySelectorAll('.quantity-control').forEach(control => {
+            const minusBtn = control.querySelector('.minus');
+            const plusBtn = control.querySelector('.plus');
+            const quantitySpan = control.querySelector('.quantity');
+
+            minusBtn.addEventListener('click', () => {
+                let quantity = parseInt(quantitySpan.textContent);
+                if (quantity > 0) {
+                    quantity--;
+                    quantitySpan.textContent = quantity;
+                }
+            });
+
+            plusBtn.addEventListener('click', () => {
+                let quantity = parseInt(quantitySpan.textContent);
+                quantity++;
+                quantitySpan.textContent = quantity;
+            });
+        });
+
+
+      //  close 
     </script>
 
 </body>
